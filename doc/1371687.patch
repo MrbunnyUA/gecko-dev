@@ -1,0 +1,31 @@
+# HG changeset patch
+# User Zheng Li <zhengnan.li@mail.utoronto.ca>
+# Date 1573838758 18000
+#      Fri Nov 15 12:25:58 2019 -0500
+# Node ID e31304ba1648eec8cac9baa0b644d8dd8cd6e5df
+# Parent  94cd78feaa1f293c4cf8e34d70c5ee9f02e1561f
+Bug_1371687 removed unused code related to UpdateShortcutAppUserModelIds options
+
+diff --git a/toolkit/mozapps/installer/windows/nsis/common.nsh b/toolkit/mozapps/installer/windows/nsis/common.nsh
+--- a/toolkit/mozapps/installer/windows/nsis/common.nsh
++++ b/toolkit/mozapps/installer/windows/nsis/common.nsh
+@@ -5780,19 +5780,6 @@ end:
+ 
+       StrCmp "$R0" "" continue +1
+ 
+-      ; Update this user's shortcuts with the latest app user model id.
+-      ClearErrors
+-      ${GetOptions} "$R0" "/UpdateShortcutAppUserModelIds" $R2
+-      IfErrors hideshortcuts +1
+-      StrCpy $R2 ""
+-!ifmacrodef InitHashAppModelId
+-      ${If} "$AppUserModelID" != ""
+-        ${UpdateShortcutAppModelIDs}  "$INSTDIR\${FileMainEXE}" "$AppUserModelID" $R2
+-      ${EndIf}
+-!endif
+-      StrCmp "$R2" "false" +1 finish ; true indicates that shortcuts have been updated
+-      Quit ; Nothing initialized so no need to call OnEndCommon
+-
+       ; Require elevation if the user can elevate
+       hideshortcuts:
+       ClearErrors
